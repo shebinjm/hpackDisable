@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: h2-hpack-disable
+  namespace: <istio-namespace>
+spec:
+  configPatches:
+  - applyTo: CLUSTER
+    patch:
+      operation: MERGE
+      value:
+        http2_protocol_options:
+          hpack_table_size: 0
+  - applyTo: NETWORK_FILTER
+    match:
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+    patch:
+      operation: MERGE
+      value:
+        typed_config:
+          "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager"
+          http2_protocol_options:
+            hpack_table_size: 0
