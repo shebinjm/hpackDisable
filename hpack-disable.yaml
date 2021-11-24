@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: h2-hpack-disable
+  name: http2-disable-hpack
   namespace: <istio-namespace>
 spec:
   configPatches:
